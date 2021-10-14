@@ -1,0 +1,100 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node{
+  struct node *prev;    
+  int data;
+  struct node *next;
+}*first = NULL,*last = NULL,*first1 = NULL, *last1 = NULL;
+
+void create(int arr[], int n){
+    struct node *t,*last;
+    first = (struct node*)malloc(sizeof(struct node));
+    first->data = arr[0];
+    first->prev = first->next = NULL;
+    last = first;
+    
+    for(int i = 1; i<n; i++){
+        t = (struct node*)malloc(sizeof(struct node));
+        t->data = arr[i];
+        t->next = last->next;
+        t->prev = last;
+        last->next = t;
+        last = t;
+}
+}
+void create1(int arr[], int n){
+    struct node *t,*last1;
+    first1 = (struct node*)malloc(sizeof(struct node));
+    first1->data = arr[0];
+    first1->prev = first1->next = NULL;
+    last1 = first1;
+    
+    for(int i = 1; i<n; i++){
+        t = (struct node*)malloc(sizeof(struct node));
+        t->data = arr[i];
+        t->next = last1->next;
+        t->prev = last1;
+        last1->next = t;
+        last1 = t;
+}
+}
+void intersection(struct node *p,struct node *q,int n,int n1){
+    int min;
+    if (n > n1) min = n1;
+    else min = n;
+    
+    int l[min], i = 0;
+    
+    while(p!=NULL){
+        q = first1;
+        while(q!=NULL){
+            if (q->data == p->data) {l[i] = q->data; i++;}
+            
+            q = q->next;
+        }
+        
+        p = p->next;
+    }
+    printf("The intersection of Linked List 1 & Linked List 2 is - ");
+    for(int k = 0; k < i; k++){
+        printf("%d ",l[k]);
+    }
+    printf("\n");
+}
+
+
+void display(struct node *p){
+    while(p!= NULL){
+        printf("%d ",p->data);
+        p = p->next;
+    }
+    printf("\n");
+}
+
+int main(){
+    int n,n1;
+    printf("enter n - ");
+    scanf("%d",&n);
+    int *arr = (int*)malloc(n*sizeof(int));
+    printf("enter elements for Linked list 1 - ");
+    for(int i = 0; i<n; i++){
+        scanf("%d",&arr[i]);
+    }
+     printf("enter n1 - ");
+    scanf("%d",&n1);
+    int *arr1 = (int*)malloc(n1*sizeof(int));
+    printf("enter elements for Linked list 2 - ");
+    for(int i = 0; i<n1; i++){
+        scanf("%d",&arr1[i]);
+    }
+    create(arr, n);
+    create1(arr1, n1);
+    printf("The 1st linked list is -> ");
+    display(first);
+    printf("The 2nd linked list is -> ");
+    display(first1);
+    intersection(first,first1,n,n1);
+    return 0;
+}
+
