@@ -1,0 +1,87 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct queue{
+  int rear;
+  int front;
+  int size;
+  int *q;
+};
+
+void create(struct queue *qu, int n){
+    qu->size = n;
+    qu->rear = qu->front = -1;
+    qu->q = (int*)malloc(n * sizeof(int));
+}
+
+void enqueue(struct queue *qu, int x){
+    if (qu->rear == qu->size-1) printf("\nOverflow\n");
+    
+    qu->rear++;
+    qu->q[qu->rear] = x;
+}
+
+int dequeue(struct queue *qu){
+    int x = -1;
+    
+    if (qu->front == qu->rear) printf("\nUnderflow\n");
+    
+    qu->front++;
+    x = qu->q[qu->front];
+    
+    return x;
+} 
+
+void display(struct queue qu){
+    
+    for(int i = qu.front+1; i<= qu.rear;i++) printf("%d ",qu.q[i]);
+    
+    printf("\n");
+}
+
+int isEmpty(struct queue *qu){
+    if (qu->front == qu->rear) return 1;
+    else return 0;
+}
+
+int isFull(struct queue *qu){
+    if (qu->rear == qu->size-1) return 1;
+    else return 0;
+}
+
+void even_odd(struct queue *qu,struct queue *q1, struct queue *q2 ){
+    while(!isEmpty(qu)){
+        int x = dequeue(qu);
+        if (x%2 == 0) enqueue(q1,x);
+        else enqueue(q2,x);
+    }
+}
+
+int main(){
+    struct queue qu,q1,q2;
+    int n;
+    printf("enter n - ");
+    scanf("%d",&n);
+    
+    create(&qu,n);
+    create(&q1,n);
+    create(&q2,n);
+    int i = 1;
+    while(i<=n){
+        int x;
+        printf("Enter element - %d -> ",i);
+        scanf("%d",&x);
+        enqueue(&qu,x);
+        i++;
+    }
+    printf("the original queue is -> ");
+    display(qu);
+    
+    even_odd(&qu,&q1,&q2);
+    
+     printf("the queue with even element is -> ");
+    display(q1);
+     printf("the queue with odd element is -> ");
+    display(q2);
+    
+}
