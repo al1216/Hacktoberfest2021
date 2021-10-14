@@ -1,0 +1,78 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node{
+    int data;
+    struct node *next;
+}*first = NULL;
+
+
+void create(int arr[], int n){
+    struct node *t,*last;
+    first = (struct node*)malloc(sizeof(struct node));
+    first->data = arr[0];
+    first->next = NULL;
+    last =  first;
+    
+    for(int i = 0; i < n; i++){
+        t = (struct node*)malloc(sizeof(struct node));
+        t->data = arr[i];
+        t->next = NULL;
+        last->next = t;
+        last = t;
+    }
+}
+
+void display(struct node *p){
+    printf("\n");
+    while(p!=NULL){
+        printf("%d ",p->data);
+        p = p->next;
+    }
+    printf("\n");
+}
+
+int search(struct node *p,int sum){
+    while(p!=NULL){
+        if (sum == p->data){
+            return 1;
+        }
+        p = p->next;
+    }
+    return 0;
+}
+
+int calculate_sum(struct node *p,int arr[],int n){
+    printf("\n");
+    int c = 0;
+    for(int i = 0 ;i < n -1 ;i++){
+        int sum = arr[i] + arr[i+1];
+        int check =  search(p,sum);
+        c = c + check;
+    }
+    return c;
+}
+
+
+int main(){
+    int nl;
+    scanf("%d",&nl);
+    char ch;
+    scanf("%c",&ch);
+    int *arr = (int*)malloc(sizeof(int)*nl);
+    for(int i = 0 ;i < nl; i++){
+        scanf("%d",&arr[i]);
+    }
+    create(arr,nl);
+    
+    int na;
+    scanf("%d",&na);
+    int *a = (int*)malloc(sizeof(int)*na);
+    for(int i = 0; i < na ;i++){
+        scanf("%d",&a[i]);
+    }
+
+    
+    printf("%d",calculate_sum(first,a,na));
+}
+
