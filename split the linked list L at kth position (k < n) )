@@ -1,0 +1,139 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct stack{
+  int size;
+  int top;
+  int *s;
+};
+
+struct node{
+  int data;
+  struct node *next;
+}*first = NULL,*last = NULL,*first1 = NULL, *last1 = NULL;
+
+void createS(struct stack *st,int n){
+    st->size = n;
+    st->top = -1;
+    st->s = (int*)malloc(sizeof(int)*n);
+}
+
+void push(struct stack *st,int x){
+    if (st->top == st->size-1) {printf("\noverflow\n");}
+    else{
+        st->top++;
+        st->s[st->top] = x;
+    }
+    
+}
+
+int pop(struct stack *st){
+    int x = -1;
+    if (st->top == -1) printf("\nUnderflow\n");
+    else{
+        x = st->s[st->top];
+        st->top--;
+    }
+    return x;
+
+}
+
+void createSL(int arr[], int n){
+    struct node *t;
+    first = (struct node*)malloc(sizeof(struct node));
+    first->data = arr[0];
+    first->next = NULL;
+    last = first;
+    
+    for(int i = 1; i<n; i++){
+        t = (struct node*)malloc(sizeof(struct node));
+        t->data = arr[i];
+        t->next = NULL;
+        last->next = t;
+        last = t;
+    }
+}
+
+void displaySL(struct node *p){
+    while(p!= NULL){
+        printf("%d ",p->data);
+        p = p->next;
+    }
+    printf("\n");
+}
+
+void displayS(struct stack st){
+    for(int i = st.top;i>=0;i--) printf("%d ",st.s[i]);
+    
+    printf("\n");
+}
+
+int len(struct node *p){
+    int x = 0;
+    while(p) {p=p->next; x++;}
+    return x;
+}
+void split(struct stack *st,struct stack *s1,struct stack *s2,struct node *p,int k){
+    int l = len(p), i = 1;
+    while(p){
+        if (p->data % 2 !=0 && i <= k){
+            push(s2,p->data);
+        }
+        
+        if (p->data % 2 ==0 && i>k){
+            push(s1,p->data);
+        }
+        
+        i++;
+        p = p->next;
+    }
+    
+    p = first;
+    i = 1;
+    while(p){
+        if (p->data % 2 != 0 && i<=k){
+            p->data = pop(s1);
+        }
+        
+        if (p->data % 2 == 0 && i>k){
+            p->data = pop(s2);
+        }
+        
+        i++;
+        p = p->next;
+    }
+    int even[l];
+    i = 1; 
+    while(s1->top != -1){
+        even[i] = pop(s1);
+        i++;
+    }
+    
+}
+
+int main(){
+    struct stack st,s1,s2;
+    struct node p;
+    int n,k;
+    printf("Enter n -> ");
+    scanf("%d",&n);
+    int *arr = (int*)malloc(sizeof(int)*n); 
+    printf("Enter k -> ");
+    scanf("%d",&k);
+    printf("Enter the elements in linked list -> ");
+    for(int i = 0 ;i < n ;i++){
+        scanf("%d",&arr[i]);
+    }
+    
+    createSL(arr,n);
+    createS(&s1,n);
+    createS(&s2,n);
+    printf("L: ");
+    displaySL(first);
+    
+    split(&st,&s1,&s2,first,k);
+
+    printf("New L: ");
+    displaySL(first);
+    
+}
