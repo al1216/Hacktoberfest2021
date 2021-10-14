@@ -1,0 +1,74 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node{
+  int data;
+  struct node *next;
+}*first = NULL,*last = NULL;
+
+void create(int arr[], int n){
+    struct node *t;
+    first = (struct node*)malloc(sizeof(struct node));
+    first->data = arr[0];
+    first->next = NULL;
+    last = first;
+    
+    for(int i = 1; i<n; i++){
+        t = (struct node*)malloc(sizeof(struct node));
+        t->data = arr[i];
+        t->next = NULL;
+        last->next = t;
+        last = t;
+    }
+}
+
+void swap(struct node *p, int k){
+    struct node *q = (struct node *)malloc(sizeof(struct node));
+    struct node *t = (struct node *)malloc(sizeof(struct node));
+    q = NULL;
+    t = first;
+    
+    for(int i = 1 ; i <= k; i++){
+        t = t->next;
+    }
+    
+    for(int i = 1 ; i < k; i++){
+        q = p;
+        p = p->next;
+    }
+    
+    q->next = p->next;
+    t->next = p;
+    p->next = last;
+}
+
+void display(struct node *p){
+    while(p!= NULL){
+        printf("%d ",p->data);
+        p = p->next;
+    }
+    printf("\n");
+}
+
+int main()
+{
+    int n,k;
+    printf("enter n - ");
+    scanf("%d",&n);
+    printf("enter position for interchanging links - ");
+    scanf("%d",&k);
+    int *arr = (int*)malloc(n*sizeof(int));
+    printf("enter elements for linked list - ");
+    for(int i = 0; i<n; i++){
+        scanf("%d",&arr[i]);
+    }
+    create(arr, n);
+    printf("The linked list is -> ");
+    display(first);
+    swap(first,k);
+    printf("The linked list after interchanging the links at position = %d is -> ",k);
+    display(first);
+    
+
+    return 0;
+}
