@@ -1,0 +1,70 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct stack{
+  int size;
+  int top;
+  int *s;
+};
+void push(struct stack *st,int x){
+    if (st->top == st->size-1) {printf("overflow\n");}
+    else{
+        st->top++;
+        st->s[st->top] = x;
+    }
+    
+}
+int sum(struct stack *st,int k){
+    int f = 0;
+    for(int i=0;i<=st->size-1;i++){
+        int x = k - st->s[i];
+        for (int j=i;j<=st->size-1;j++){
+            if (i!=j && x==st->s[j]){
+                f=1;
+                printf("the pair are %d and %d where sum=%d\n",st->s[i],st->s[j],k);
+                break;
+            }
+        }
+    }
+    
+    if (f==0) printf("no pair found with sum=%d",k);
+    
+}
+void display(struct stack st){
+    for(int i = st.top;i>=0;i--) printf("%d ",st.s[i]);
+}
+
+void create(struct stack *st){
+    printf("enter size-\n");
+    scanf("%d",&st->size);
+    st->s = (int*)malloc(st->size*sizeof(int));
+    st->top = -1;
+}
+
+int main(){
+    struct stack st;
+    //create stack
+    create(&st);
+    //push elements into stack
+    push(&st,10);
+    push(&st,20);
+    push(&st,30);
+    push(&st,40);
+    push(&st,50);
+    //display of elements
+    printf("display of elements in stack-\n");
+    display(st);
+    printf("\n");
+    //pop op.
+    // pop(&st);
+    // //display of elements after popping even position
+    // printf("display of elements after popping even position :)\n");
+    // pop_display(st);
+    
+    //sum 
+    int k;
+    printf("enter sum value-\n");
+    scanf("%d",&k);
+    sum(&st,k);
+
+}
